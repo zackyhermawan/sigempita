@@ -25,7 +25,7 @@
                         Reset Password User
                     </h2>
                     <p class="text-xs md:text-sm text-slate-400 font-medium mt-1">
-                        User: <span class="font-bold text-slate-600">{{ $user->name }}</span>
+                        Username: <span class="font-bold text-slate-600">{{ $user->username }}</span>
                     </p>
                 </div>
 

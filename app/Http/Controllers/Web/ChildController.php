@@ -84,6 +84,11 @@ class ChildController extends Controller
             'date_of_birth' => 'required|date',
             'parent_name' => 'required',
             'gender' => 'required|in:Laki-laki,Perempuan'
+        ], [
+            'name.required' => 'Nama wajib diisi',
+            'date_of_birth.required' => 'Tanggal lahir wajib diisi',
+            'parent_name.required' => 'Nama orang tua wajib diisi',
+            'gender.required' => 'Jenis kelamin wajib diisi'
         ]);
 
         $child->update($request->only('name', 'date_of_birth', 'parent_name', 'gender'));

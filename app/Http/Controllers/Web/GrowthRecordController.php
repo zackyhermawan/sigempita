@@ -111,6 +111,11 @@ class GrowthRecordController extends Controller
             'record_date' => 'required|date',
             'weight' => 'required|numeric',
             'height' => 'required|numeric',
+        ], [
+            'child_id.required' => 'Pilih anak',
+            'record_date.required' => 'Tanggal wajib diisi',
+            'weight.required' => 'Berat badan wajib diisi',
+            'height.required' => 'Tinggi badan wajib diisi',
         ]);
 
         $record->update($request->only('child_id', 'record_date', 'weight', 'height'));

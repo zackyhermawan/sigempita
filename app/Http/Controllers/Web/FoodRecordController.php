@@ -109,7 +109,12 @@ public function update(Request $request, $id)
         'record_date' => 'required|date',
         'food_type' => 'required',
         'feeding_period' => 'required'
-    ]);
+    ], [
+            'child_id.required' => 'Pilih anak',
+            'record_date.required' => 'Tanggal wajib diisi',
+            'food_type.required' => 'Jenis makanan wajib diisi',
+            'feeding_period.required' => 'Waktu wajib diisi',
+        ]);
 
     $record->update($request->only('child_id', 'record_date', 'food_type', 'feeding_period'));
 
