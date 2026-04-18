@@ -17,7 +17,7 @@
             <p class="text-xs md:text-sm text-slate-500 font-medium italic">Masukkan informasi dasar si kecil untuk mulai memantau perkembangannya.</p>
         </div>
 
-        <form action="/children" method="POST" class="space-y-5 md:space-y-6">
+        <form action="/children" method="POST" onsubmit="handleLogin(this)" class="space-y-5 md:space-y-6">
             @csrf
             
             {{-- Nama Lengkap --}}
@@ -67,10 +67,31 @@
             </div>
 
             {{-- Button --}}
-            <button type="submit" class="w-full mt-4 py-4 md:py-5 bg-rose-500 text-white font-black rounded-xl md:rounded-2xl shadow-xl shadow-rose-100 hover:bg-rose-600 active:scale-[0.98] transition-all uppercase tracking-widest text-xs md:text-sm">
-                Simpan Data Si Kecil
+            <button id="registerBtn" type="submit" class="flex items-center justify-center gap-3 w-full mt-4 py-4 md:py-5 bg-rose-500 text-white font-black rounded-xl md:rounded-2xl shadow-xl shadow-rose-100 hover:bg-rose-600 active:scale-[0.98] transition-all uppercase tracking-widest text-xs md:text-sm">
+                <span id="btnText">Simpan data si kecil</span>
+                <div id="spinner" class="hidden animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
             </button>
         </form>
     </div>
 </div>
+
+<script>
+    function handleLogin(form) {
+        const btn = document.getElementById('registerBtn');
+        const text = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+
+        // 1. Matikan tombol biar gak di-klik dua kali
+        btn.disabled = true;
+        
+        // 2. Ubah tampilan tombol (agak transparan & kursor berubah)
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+        // 3. Ganti teks & munculkan spinner
+        text.innerText = 'Memuat...'; 
+        spinner.classList.remove('hidden');
+
+        return true; // Biarkan form lanjut kirim data ke server
+    }
+</script>
 @endsection

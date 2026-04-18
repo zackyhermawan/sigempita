@@ -76,7 +76,7 @@ class MonitoringController extends Controller
         $child = Children::with(['growthRecords', 'monitorings'])
             ->findOrFail($child_id);
 
-        // 🔥 ambil 3 data pertumbuhan terakhir
+        // ðŸ”¥ ambil 3 data pertumbuhan terakhir
         $growthRecords = $child->growthRecords()
             ->orderByDesc('record_date')
             ->orderByDesc('created_at')
@@ -88,12 +88,12 @@ class MonitoringController extends Controller
             ->sortByDesc('created_at')
             ->first();
 
-        // 🔥 makanan hari ini saja
+        // ðŸ”¥ makanan hari ini saja
         $foodToday = FoodRecord::where('child_id', $child_id)
             ->whereDate('record_date', today())
             ->get();
 
-        // 🔥 indikator perubahan BB
+        // ðŸ”¥ indikator perubahan BB
         $weightDiff = null;
         if ($growthRecords->count() >= 2) {
             $weightDiff = $growthRecords->values()[0]->weight - $growthRecords->values()[1]->weight;

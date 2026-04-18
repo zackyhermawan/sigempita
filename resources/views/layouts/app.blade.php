@@ -8,6 +8,11 @@
     <style>
         [x-cloak] { display: none !important; }
         
+        h-screen {
+            height: 100vh; 
+            height: 100dvh; 
+        }
+        
         /* Opsional: Mempercantik scrollbar di area konten */
         .content-scrollbar::-webkit-scrollbar { width: 6px; }
         .content-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -16,9 +21,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-rose-50/30 text-slate-700 font-sans h-full overflow-hidden" x-data="{ isOpen: false }">
+<body class="bg-rose-50/30 text-slate-700 font-sans min-h-screen overflow-hidden" x-data="{ isOpen: false }">
 
-<div class="flex h-screen overflow-hidden">
+<div class="flex h-full">
     <div x-cloak x-show="isOpen" 
         x-transition:enter="transition opacity ease-out duration-300"
         @click="isOpen = false" 
@@ -27,7 +32,7 @@
 
     <aside x-cloak
         :class="isOpen ? 'translate-x-0' : '-translate-x-full'" 
-        class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transition-transform duration-300 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-0 flex flex-col h-full border-r border-rose-100">
+        class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transition-transform duration-300 transform lg:translate-x-0 lg:static lg:inset-y-0 flex flex-col h-screen border-r border-rose-100 flex-shrink-0">
         
         <div class="p-6 text-center border-b border-rose-100 flex-shrink-0">
             <div class="inline-flex items-center justify-center w-12 h-12 mb-2 rounded-full bg-rose-100 text-rose-500">
@@ -36,7 +41,7 @@
             <h1 class="block font-bold text-rose-600 tracking-tight">E-Monitoring Balita</h1>
         </div>
 
-        <nav class="p-4 space-y-1 flex-1 overflow-y-auto">
+        <nav class="p-4 space-y-1 flex-1 overflow-y-auto content-scrollbar">
             @php
                 $navItems = auth()->user()->role === 'user' ? [
                     ['url' => '/dashboard', 'icon' => 'o-home', 'label' => 'Beranda'],
@@ -73,7 +78,7 @@
         </nav>
     </aside>
 
-    <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         
         <header class="flex-shrink-0 flex items-center justify-between px-6 py-4 bg-white border-b border-rose-100 z-30">
             <div class="flex items-center gap-4">
@@ -94,9 +99,13 @@
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto content-scrollbar bg-rose-50/30 p-4 md:p-8">
-            <div class="w-full">
-                @yield('content')
+        <main class="flex-1 overflow-y-auto content-scrollbar bg-rose-50/30">
+            <div class="p-4 md:p-8 pb-40 md:pb-16"> 
+                <div class="w-full mx-auto">
+                    @yield('content')
+                    
+                    <div class="h-20 lg:hidden"></div>
+                </div>
             </div>
         </main>
     </div>

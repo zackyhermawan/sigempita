@@ -16,7 +16,7 @@ use App\Http\Controllers\Web\Admin\MonitoringController;
 use App\Http\Controllers\Web\Admin\ReportController;
 
 // Guest
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/register', [AuthController::class, 'showRegister']);

@@ -88,21 +88,21 @@ class GrowthRecordController extends Controller
 
     public function edit($id)
     {
-        $record = GrowthRecord::findOrFail($id);
-
-        // proteksi user
-        if (Auth::user()->role === 'user' && $record->child->user_id !== Auth::id()) {
+        $record = GrowthRecord::with('child')->findOrFail($id);
+    
+        // Gunakan !=
+        if (Auth::user()->role === 'user' && $record->child->user_id != Auth::id()) {
             abort(403);
         }
-
         return view('growth.edit', compact('record'));
     }
 
     public function update(Request $request, $id)
     {
-        $record = GrowthRecord::findOrFail($id);
+        $record = GrowthRecord::with('child')->findOrFail($id);
 
-        if (Auth::user()->role === 'user' && $record->child->user_id !== Auth::id()) {
+    // Gunakan !=
+        if (Auth::user()->role === 'user' && $record->child->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -155,7 +155,7 @@ class GrowthRecordController extends Controller
         $record = GrowthRecord::findOrFail($id);
 
         // Proteksi user (Sudah Mantap!)
-        if (Auth::user()->role === 'user' && $record->child->user_id !== Auth::id()) {
+        if (Auth::user()->role === 'user' && $record->child->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -174,14 +174,13 @@ class GrowthRecordController extends Controller
         $itemsPerPage = 10;
         $lastPage = ceil($remainingItems / $itemsPerPage);
 
-        // Jika halaman saat ini jadi kosong, lempar ke halaman sebelumnya
+        // Jika halaman saat ini lebih besar dari total halaman yang tersedia, 
+        // dan total halaman masih ada (> 0), arahkan ke halaman terakhir yang ada.
         if ($currentPage > $lastPage && $lastPage > 0) {
             return redirect()->route('growth.index', ['page' => $lastPage])
-                            ->with('success', 'Data berhasil dihapus');
+                            ->with('success', 'Catatan berhasil dihapus.');
         }
 
-        // Jika masih ada data di halaman tersebut, pakai back() tidak masalah
-        return redirect()->route('growth.index', ['page' => $currentPage])
-                        ->with('success', 'Data berhasil dihapus');
+        return redirect('/growth')->with('success', 'Catatan berhasil dihapus.');
     }
 }

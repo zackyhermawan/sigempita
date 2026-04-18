@@ -80,36 +80,41 @@ class FoodRecordController extends Controller
     }
 
     public function edit($id)
-    {
-        $record = FoodRecord::findOrFail($id);
+{
+    // Eager load relasi 'child' untuk cek user_id
+    $record = FoodRecord::with('child')->findOrFail($id);
 
-        // proteksi user
-        if (Auth::user()->role === 'user' && $record->child->user_id !== Auth::id()) {
-            abort(403);
-        }
-
-        return view('food.edit', compact('record'));
+    // Proteksi: Cek user_id milik anak yang ada di record tersebut
+    if (Auth::user()->role === 'user' && $record->child->user_id != Auth::id()) {
+        abort(403);
     }
 
-    public function update(Request $request, $id)
-    {
-        $record = FoodRecord::findOrFail($id);
+    // Untuk dropdown edit, ambil daftar anak milik user tersebut
+    $children = Children::where('user_id', Auth::id())->get();
 
-        if (Auth::user()->role === 'user' && $record->child->user_id !== Auth::id()) {
-            abort(403);
-        }
+    return view('food.edit', compact('record', 'children'));
+}
 
-        $request->validate([
-            'child_id' => 'required',
-            'record_date' => 'required|date',
-            'food_type' => 'required',
-            'feeding_period' => 'required'
-        ]);
+public function update(Request $request, $id)
+{
+    $record = FoodRecord::with('child')->findOrFail($id);
 
-        $record->update($request->only('child_id', 'record_date', 'food_type', 'feeding_period'));
-
-        return redirect('/food')->with('success', 'Data makanan berhasil diupdate');
+    // Proteksi yang sama
+    if (Auth::user()->role === 'user' && $record->child->user_id != Auth::id()) {
+        abort(403);
     }
+
+    $request->validate([
+        'child_id' => 'required',
+        'record_date' => 'required|date',
+        'food_type' => 'required',
+        'feeding_period' => 'required'
+    ]);
+
+    $record->update($request->only('child_id', 'record_date', 'food_type', 'feeding_period'));
+
+    return redirect('/food')->with('success', 'Data makanan berhasil diupdate');
+}
 
     // DELETE
     public function destroy($id)

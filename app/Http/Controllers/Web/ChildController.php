@@ -61,7 +61,8 @@ class ChildController extends Controller
         $child = Children::findOrFail($id);
 
         // proteksi user
-        if (Auth::user()->role === 'user' && $child->user_id !== Auth::id()) {
+        // Ubah di fungsi edit, update, dan destroy
+        if (Auth::user()->role === 'user' && $child->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -73,7 +74,8 @@ class ChildController extends Controller
     {
         $child = Children::findOrFail($id);
 
-        if (Auth::user()->role === 'user' && $child->user_id !== Auth::id()) {
+// Ubah di fungsi edit, update, dan destroy
+        if (Auth::user()->role === 'user' && $child->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -94,7 +96,8 @@ class ChildController extends Controller
     {
         $child = Children::findOrFail($id);
 
-        if (Auth::user()->role === 'user' && $child->user_id !== Auth::id()) {
+        // Ubah di fungsi edit, update, dan destroy
+        if (Auth::user()->role === 'user' && $child->user_id != Auth::id()) {
             abort(403);
         }
 

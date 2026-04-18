@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <form action="/growth/{{ $record->id }}" method="POST" class="space-y-6">
+        <form action="/growth/{{ $record->id }}" onsubmit="handleLogin(this)" method="POST" class="space-y-6">
             @csrf
             @method('PUT')
             
@@ -84,11 +84,31 @@
 
             {{-- Button Aksi --}}
             <div class="pt-4 md:pt-6">
-                <button type="submit" class="w-full py-4 md:py-5 bg-amber-400 text-white font-black rounded-xl md:rounded-2xl shadow-xl shadow-amber-100 hover:bg-amber-500 active:scale-[0.98] transition-all uppercase tracking-widest text-xs md:text-sm">
-                    Perbarui Data
+                <button id="registerBtn" type="submit" class="flex items-center justify-center gap-3 w-full mt-4 py-4 md:py-5 bg-amber-400 text-white font-black rounded-xl md:rounded-2xl shadow-xl shadow-amber-100 hover:bg-amber-500 active:scale-[0.98] transition-all uppercase tracking-widest text-xs md:text-sm">
+                    <span id="btnText">Perbarui Data</span>
+                    <div id="spinner" class="hidden animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                 </button>
             </div>
         </form>
     </div>
 </div>
+<script>
+    function handleLogin(form) {
+        const btn = document.getElementById('registerBtn');
+        const text = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+
+        // 1. Matikan tombol biar gak di-klik dua kali
+        btn.disabled = true;
+        
+        // 2. Ubah tampilan tombol (agak transparan & kursor berubah)
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+        // 3. Ganti teks & munculkan spinner
+        text.innerText = 'Memuat...'; 
+        spinner.classList.remove('hidden');
+
+        return true; // Biarkan form lanjut kirim data ke server
+    }
+</script>
 @endsection

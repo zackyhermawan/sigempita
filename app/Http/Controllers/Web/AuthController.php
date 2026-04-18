@@ -37,7 +37,7 @@ class AuthController extends Controller
             'role' => 'user'
         ]);
 
-        return redirect('/login')->with('success', 'Register berhasil, silakan login');
+        return redirect('/')->with('success', 'Register berhasil, silakan login');
     }
 
     // ================= LOGIN =================
@@ -84,6 +84,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/');
     }
 }

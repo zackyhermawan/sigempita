@@ -12,11 +12,11 @@ class DashboardController extends Controller
 {
     public function index()
 {
-    // 🔹 Total anak & bunda
+    // ðŸ”¹ Total anak & bunda
     $totalChildren = Children::count();
     $totalParents = User::where('role', 'user')->count();
 
-    // 🔹 Ambil semua anak + relasi
+    // ðŸ”¹ Ambil semua anak + relasi
     $children = Children::with(['growthRecords', 'monitorings'])->get();
 
     $needValidation = 0;
@@ -35,7 +35,7 @@ class DashboardController extends Controller
             ->sortByDesc('created_at')
             ->first();
 
-        // 🔥 1. PERLU VALIDASI
+        // ðŸ”¥ 1. PERLU VALIDASI
         if ($lastGrowth && !$lastMonitoring) {
             $needValidation++;
         }
@@ -47,7 +47,7 @@ class DashboardController extends Controller
             }
         }
 
-        // 🔥 2. ANAK BERISIKO
+        // ðŸ”¥ 2. ANAK BERISIKO
         if ($lastMonitoring && in_array($lastMonitoring->nutritional_status, [
             'Gizi Kurang', 'Stunting', 'Obesitas'
         ])) {
@@ -55,13 +55,13 @@ class DashboardController extends Controller
         }
     }
 
-    // 🔥 Monitoring terbaru (untuk tabel)
+    // ðŸ”¥ Monitoring terbaru (untuk tabel)
     $latestMonitoring = Monitoring::with(['child'])
         ->latest()
         ->take(5)
         ->get();
 
-    // 🔥 Anak perlu perhatian (tidak update > 7 hari)
+    // ðŸ”¥ Anak perlu perhatian (tidak update > 7 hari)
     $attention = $children->filter(function ($child) {
         $lastGrowth = $child->growthRecords
             ->sortByDesc('record_date')

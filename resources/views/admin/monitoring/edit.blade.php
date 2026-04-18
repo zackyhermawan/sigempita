@@ -133,7 +133,7 @@
     {{-- ================== FORM ================== --}}
     {{-- Kita tambahkan opacity-50 dan pointer-events-none jika data kosong --}}
     <div class="bg-white rounded-xl md:rounded-xl p-6 md:p-10 shadow-sm border border-rose-50 {{ !$lastGrowth ? 'opacity-50 pointer-events-none select-none' : '' }}">
-        <form action="/admin/monitoring/{{ $child->id }}" method="POST">
+        <form action="/admin/monitoring/{{ $child->id }}" onsubmit="handleLogin(this)"  method="POST">
             @csrf
             @method('PUT')
 
@@ -172,11 +172,32 @@
                 </div>
             </div>
 
-            <button type="submit" {{ !$lastGrowth ? 'disabled' : '' }}
-                class="w-full mt-4 py-4 md:py-5 bg-rose-500 text-white font-black rounded-xl md:rounded-2xl shadow-xl shadow-rose-100 hover:bg-rose-600 active:scale-[0.98] transition-all uppercase tracking-widest text-xs md:text-sm cursor-pointer">
-                {{ !$lastGrowth ? 'Penilaian Tidak Tersedia' : 'Simpan Penilaian' }}
+            <button id="editBtn" type="submit" {{ !$lastGrowth ? 'disabled' : '' }}
+                class="flex items-center justify-center gap-3 w-full mt-4 py-4 md:py-5 bg-rose-500 text-white font-black rounded-xl md:rounded-2xl shadow-xl shadow-rose-100 hover:bg-rose-600 active:scale-[0.98] transition-all uppercase tracking-widest text-xs md:text-sm cursor-pointer">
+                <span id="btnText">{{ !$lastGrowth ? 'Penilaian Tidak Tersedia' : 'Simpan Penilaian' }}</span>
+                <div id="spinner" class="hidden animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
             </button>
         </form>
     </div>
 </div>
+
+<script>
+     function handleLogin(form) {
+        const btn = document.getElementById('editBtn');
+        const text = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+
+        // 1. Matikan tombol biar gak di-klik dua kali
+        btn.disabled = true;
+        
+        // 2. Ubah tampilan tombol (agak transparan & kursor berubah)
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+        // 3. Ganti teks & munculkan spinner
+        text.innerText = 'Memuat...'; 
+        spinner.classList.remove('hidden');
+
+        return true; // Biarkan form lanjut kirim data ke server
+    }
+</script>
 @endsection
